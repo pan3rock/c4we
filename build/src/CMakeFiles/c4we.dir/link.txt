@@ -1,1 +1,0 @@
-clang++  -std=c++14 -Wall -g -fPIC -O3 -march=native -ffast-math  -rdynamic CMakeFiles/c4we.dir/problem.cc.o CMakeFiles/c4we.dir/statistics.cc.o CMakeFiles/c4we.dir/inversion.cc.o  -o c4we -larmadillo /usr/lib/libyaml-cpp.so.0.6.2 

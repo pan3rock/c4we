@@ -1,3 +1,10 @@
+# add
+build
+lib
+bin
+demo
+__pycache__
+
 # Prerequisites
 *.d
 
