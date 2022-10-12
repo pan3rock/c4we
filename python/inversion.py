@@ -38,6 +38,7 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="inversion")
+    parser.add_argument('file_data')
     parser.add_argument("--maxiter",
                         type=int,
                         default=100,
@@ -45,31 +46,42 @@ if __name__ == "__main__":
     parser.add_argument("--nx",
                         type=int,
                         help="number of wavelet samplings")
+    parser.add_argument('--xintv', type=int, default=1)
+    parser.add_argument('--tintv', type=int, default=1)
     parser.add_argument("--ftol",
                         type=float,
                         default=1.0e-5,
                         help="The iteration stops when (f^k - f^{k+1})"
-                        +"/max{|f^k|,|f^{k+1}|,1} <= ftol.")
+                        + "/max{|f^k|,|f^{k+1}|,1} <= ftol.")
     args = parser.parse_args()
+    file_data = args.file_data
     maxiter = args.maxiter
     ftol = args.ftol
     nx = args.nx
+    xintv = args.xintv
+    tintv = args.tintv
 
-    st = read("./M2.sg2")
-    data_list = []
-    nr = st.count()
-    for i in range(nr):
-        data_list.append(st.traces[i].data)
-    data = np.array(data_list, dtype=np.float64)
-    time = st.traces[0].times()
+    #st = read("./M2.sg2")
+    #data_list = []
+    #nr = st.count()
+    # for i in range(nr):
+    #    data_list.append(st.traces[i].data)
+    #data = np.array(data_list, dtype=np.float64)
+    #time = st.traces[0].times()
+    #nt = time.shape[0]
+    #dt = time[1] - time[0]
+    #st = np.load("./M3.npz")
+    # st = np.load('ut3000-4000.npz')
+    # st = np.load('ut2000-3000.npz')
+    st = np.load(file_data)
+    time = st['t'][::tintv]
+    tmp = st['ut'].astype(np.float64)[::xintv, ::tintv]
+    data = np.zeros_like(tmp)
+    data[:, :] = tmp
+    print(np.info(data))
+    nr = data.shape[0]
     nt = time.shape[0]
     dt = time[1] - time[0]
-    # data = np.load("./data_l4_wang2.npz")
-    # time = data['time']
-    # data = data['vz']
-    # nr = data.shape[0]
-    # nt = time.shape[0]
-    # dt = time[1] - time[0]
 
     # for i in range(nr):
     #     data[i, :] = butter_lowpass_filter(data[i, :], 60., 1./dt)
