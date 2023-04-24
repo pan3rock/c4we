@@ -83,8 +83,8 @@ if __name__ == "__main__":
     nt = time.shape[0]
     dt = time[1] - time[0]
 
-    # for i in range(nr):
-    #     data[i, :] = butter_lowpass_filter(data[i, :], 60., 1./dt)
+    for i in range(nr):
+        data[i, :] = butter_lowpass_filter(data[i, :], 8., 1./dt)
 
     # data = data[0, :].reshape((1, -1))
 
@@ -138,3 +138,4 @@ if __name__ == "__main__":
     plt.plot(time, x_final, 'b', label="x_final", alpha=0.8)
     plt.legend()
     plt.show()
+    np.savez('wavelet.npz', x=np.array(x_final_list), xm=x_final, t=time)
